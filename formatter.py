@@ -1,9 +1,9 @@
 from os.path import exists, isdir, isfile
 from PIL import Image
 from pillow_heif import register_heif_opener
-
-import ffmpeg
 import os
+import platform
+
 def get_files_and_add(path : str, path_list : list):
     if os.path.isfile(path):
         path_list.append(path)
@@ -94,8 +94,11 @@ counter = 0
 assert(os.path.isdir(out_dir))
 register_heif_opener()
 for file in image_path_list:
-
-    new_file_directory : str = file[0:file.rfind("/")].replace(path,out_dir)
+    if platform.system() == "Windows":
+         new_file_directory : str = file[0:file.rfind("\\")].replace(path,out_dir)  
+    else:    
+        new_file_directory : str = file[0:file.rfind("/")].replace(path,out_dir)
+    
     if new_file_directory != previous_directory:
         previous_directory = new_file_directory
         counter = 0
