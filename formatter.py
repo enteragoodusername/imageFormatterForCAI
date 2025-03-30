@@ -1,5 +1,7 @@
 from os.path import exists, isdir, isfile
-from heic2png import HEIC2PNG
+from PIL import Image
+from pillow_heif import register_heif_opener
+
 import ffmpeg
 import os
 def get_files_and_add(path : str, path_list : list):
@@ -57,10 +59,7 @@ for file in path_list:
     extension : str = file[file.rfind("."):].lower()
 
     # Im starting to think apple uses  HEIC to make us miserable
-    if extension == ".heic":
-        heic_img = HEIC2PNG(file, quality=50)
-        print(heic_img.save())
-    elif  extension in included_formats:
+    if extension in included_formats:
         image_path_list.append(file)
     else:
         possible_error_flag = True
@@ -93,6 +92,7 @@ create_mirror_directory(path,out_dir)
 previous_directory = ""
 counter = 0
 assert(os.path.isdir(out_dir))
+register_heif_opener()
 for file in image_path_list:
 
     new_file_directory : str = file[0:file.rfind("/")].replace(path,out_dir)
@@ -107,14 +107,12 @@ for file in image_path_list:
     while( os.path.isfile(new_file_path)):
         new_file_path = f"{new_file_directory}/img{counter}.png" 
         counter+= 1
-    {
-        ffmpeg.input(file)
-            .filter('scale', 128, 128)
-            .output(new_file_path, pix_fmt='rgb24')
-            .run()
-    }
+
+    image = Image.open(file)
+    new_size = (128,128)  # Specify the desired width and height
+    resized_image = image.resize(new_size)
+    resized_image.convert("RGB").save(new_file_path)
 
 print()
 print(f"Done! Files are in {out_dir}")
-print("PS dont worry about the yellow warnings :) ffmpeg")
 
