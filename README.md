@@ -13,3 +13,5 @@ You need to install the pillow_heif pip module
 ```
 
 Afterwards you can just place formatter.py in the same directory where your images directory is and run the script from there. It will then prompt you for input.
+
+NOTE: The program assumes that the aspect ratio is 1:1 or at least close enough that it wont matter visually. Otherwise it will still function, but it will stretch the image immensely
