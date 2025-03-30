@@ -2,7 +2,7 @@
 
 This python script takes an input directory and then makes a copy of the project where images are turned into 128x128 rbg png images. It retains the hierarchy of folders.
 
-It also gives the new files the correct names and handles adding new images to an existing copy. 
+It also gives the new files the correct names and handles adding new images to an existing directory copy. 
 
 It supports JPG, PNG, HEIC, and WEBP formats
 
